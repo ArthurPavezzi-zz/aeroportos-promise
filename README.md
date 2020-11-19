@@ -1,3 +1,4 @@
+![npm](https://img.shields.io/npm/v/aeroportos-promise)
 <h1 align="center">Aeroportos Promise 🛬🛫</h1>
 
 <p align="center">Busca por aeroportos nacionais pelo código IATA</p>
