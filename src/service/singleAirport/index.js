@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 async function getSingleAirportByIata(iata) {
-    const url = `https://aeroportos-api.vercel.app/api/api/airports/${iata}`;
+    const url = `https://aeroportos-api.arthurpavezzi.vercel.app/api/api/airports/${iata}`;
 
     try {
         return await axios.get(url);
@@ -10,4 +10,4 @@ async function getSingleAirportByIata(iata) {
     }
 }
 
-module.exports = getSingleAirportByIata();
+module.exports = getSingleAirportByIata;
