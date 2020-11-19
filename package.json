@@ -1,0 +1,22 @@
+{
+  "name": "aeroportos-promise",
+  "version": "1.0.0",
+  "description": "Busca aeroportos brasileiros pelo código IATA \uD83D\uDEEC \uD83D\uDEEB",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ArthurPavezzi/aeroportos-promise.git"
+  },
+  "author": "Arthur Pavezzi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ArthurPavezzi/aeroportos-promise/issues"
+  },
+  "homepage": "https://github.com/ArthurPavezzi/aeroportos-promise",
+  "dependencies": {
+    "axios": "^0.19.2"
+  }
+}
