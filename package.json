@@ -1,6 +1,6 @@
 {
   "name": "aeroportos-promise",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Busca aeroportos brasileiros pelo código IATA 🛬 🛫",
   "main": "index.js",
   "scripts": {

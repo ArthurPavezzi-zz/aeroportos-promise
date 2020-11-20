@@ -1,1 +1,1 @@
-module.exports = require('./src/aeroportos-promisex');
+module.exports = require('./src/aeroportos-promise');
