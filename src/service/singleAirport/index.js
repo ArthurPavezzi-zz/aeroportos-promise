@@ -6,6 +6,9 @@ async function getSingleAirportByIata(iata) {
     try {
         return await axios.get(url);
     } catch (error) {
+        if (error.response.status === 404) {
+            return JSON.stringify({'erro': 'Não foi encontrado um aeroporto com este código'});
+        }
         return JSON.stringify({'erro': 'Erro ao buscar aeroporto'});
     }
 }
