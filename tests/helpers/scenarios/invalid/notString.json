@@ -1,0 +1,9 @@
+{
+  "name": "AeroportosPromiseError",
+  "message": "O código IATA deve ser uma string",
+  "type": "validation_error",
+  "error": {
+    "message": "Código IATA informado não é uma string.",
+    "service": "iata_validation"
+  }
+}

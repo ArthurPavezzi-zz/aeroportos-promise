@@ -1,3 +1,9 @@
 {
-  "erro": "Não foi encontrado um aeroporto com este código"
+  "name": "AeroportosPromiseError",
+  "message": "Aeroporto não encontrado",
+  "type": "service_error",
+  "error": {
+    "message": "Não foi possível encontrar um aeroporto com este código IATA.",
+    "service": "aeroportos_api"
+  }
 }

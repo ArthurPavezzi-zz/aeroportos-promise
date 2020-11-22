@@ -1,39 +1,84 @@
+const AeroportosPromiseError = require('../src/errors/aeportos-promise')
 const airports = require('../src/aeroportos-promise')
 
 const scenarios = {
     success: require('./helpers/scenarios/success.json'),
     nonexistent: require('./helpers/scenarios/nonexistent.json'),
-    invalid: require('./helpers/scenarios/invalid.json')
+    invalid: {
+        lessChars: require('./helpers/scenarios/invalid/lessChars.json'),
+        moreChars: require('./helpers/scenarios/invalid/moreChars.json'),
+        specialChars: require('./helpers/scenarios/invalid/specialChars.json'),
+        notString: require('./helpers/scenarios/invalid/notString.json')
+    }
 }
 
 describe('E2E', () => {
-    test('Utilizando IATAs corretos com caixa alta, baixa e misto: CWB, cwb e cWb', async () => {
-        expect.assertions(3);
+    it('Utilizando IATAs corretos com caixa alta, baixa e misto: CWB, cwb e cWb', async () => {
+        const response1 = await airports('CWB');
+        const response2 = await airports('cwb');
+        const response3 = await airports('cWb');
 
-        const response1 = await airports.getAirportByIata("CWB");
-        const response2 = await airports.getAirportByIata("cwb");
-        const response3 = await airports.getAirportByIata("cWb");
+        expect.assertions(3)
+        expect(response1.data).toMatchObject(scenarios.success)
+        expect(response2.data).toMatchObject(scenarios.success)
+        expect(response3.data).toMatchObject(scenarios.success)
+    })
 
-        expect(response1.data).toEqual(scenarios.success);
-        expect(response2.data).toEqual(scenarios.success);
-        expect(response3.data).toEqual(scenarios.success);
-    });
+    it('Utilizando um IATA inexistente: ZZZ', async () => {
+        expect.assertions(2)
 
-    test('Utilizando um IATA inexistente: ZZZ', async () => {
-        const response = await airports.getAirportByIata("ZZZ");
+        try {
+            await airports("ZZZ")
+        } catch (error) {
+            console.log(error)
+            expect(error).toBeInstanceOf(AeroportosPromiseError)
+            expect(error).toMatchObject(scenarios.nonexistent)
+        }
+    })
 
-        expect(JSON.parse(response)).toEqual(scenarios.nonexistent);
-    });
+    it('Utilizando IATAs inválidos: ZZZZ, ZZ, A_Z, A1Z e 777', async () => {
+        expect.assertions(10);
 
-    test('Utilizando IATAs inválidos: ZZZZ, A_Z e A1Z', async () => {
-        expect.assertions(3);
+        try {
+            await airports("ZZZZ")
+        } catch (error) {
+            expect(error).toBeInstanceOf(AeroportosPromiseError)
+            expect(error).toMatchObject(scenarios.invalid.moreChars)
+        }
 
-        const response1 = await airports.getAirportByIata("ZZZZ");
-        const response2 = await airports.getAirportByIata("A_Z");
-        const response3 = await airports.getAirportByIata("A1Z");
+        try {
+            await airports("ZZ")
+        } catch (error) {
+            expect(error).toBeInstanceOf(AeroportosPromiseError)
+            expect(error).toMatchObject(scenarios.invalid.lessChars)
+        }
 
-        expect(JSON.parse(response1)).toEqual(scenarios.invalid);
-        expect(JSON.parse(response2)).toEqual(scenarios.invalid);
-        expect(JSON.parse(response3)).toEqual(scenarios.invalid);
-    });
+        try {
+            await airports("A_Z")
+        } catch (error) {
+            expect(error).toBeInstanceOf(AeroportosPromiseError)
+            expect(error).toMatchObject(scenarios.invalid.specialChars)
+        }
+
+        try {
+            await airports("A1Z")
+        } catch (error) {
+            expect(error).toBeInstanceOf(AeroportosPromiseError)
+            expect(error).toMatchObject(scenarios.invalid.specialChars)
+        }
+
+        try {
+            await airports(777)
+        } catch (error) {
+            expect(error).toBeInstanceOf(AeroportosPromiseError)
+            expect(error).toMatchObject(scenarios.invalid.notString)
+        }
+    })
+
+    it('Não utilizando IATA - retornando todos os aeroportos', async () => {
+        const response = await airports();
+        const objectLength = Object.keys(response.data).length
+
+        expect(objectLength).toEqual(300)
+    })
 });

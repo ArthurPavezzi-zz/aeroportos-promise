@@ -17,47 +17,64 @@ Basta utilizar o [código IATA](https://pt.wikipedia.org/wiki/C%C3%B3digo_aeropo
 ```js
 const aeroportos = require('aeroportos-promise');
 
-aeroportos.getAirportByIata('CWB').then(console.log);
+aeroportos('CWB').then(response => console.log(response.data));
 
 // {
-//  city: "Curitiba",
-//  elevation: 910.74,
-//  iata: "CWB",
-//  icao: "SBCT",
-//  lat: -25.5284996033,
-//  lon: -49.1758003235,
-//  name: "Aeroporto Internacional Afonso Pena",
-//  state: "Paraná",
-//  tz: "America/Sao_Paulo",
-//  uf: "PR"
-//}
+//   icao: 'SBCT',
+//   iata: 'CWB',
+//   name: 'Aeroporto Internacional Afonso Pena',
+//   city: 'Curitiba',
+//   state: 'Paraná',
+//   elevation: 910.74,
+//   lat: -25.5284996033,
+//   lon: -49.1758003235,
+//   tz: 'America/Sao_Paulo',
+//   uf: 'PR'
+// }
 ```
 
-### Quando a sigla possui um formato inválido (caracteres especiais ou não tem 3 letras)
+### Quando a sigla possui um formato inválido (não é uma string, possui caracteres especiais ou não tem 3 letras)
+Nestes casos será retornado um `"validation_error""` e a biblioteca irá rejeitar imediatamente a Promise, sem chegar a consultar a [API](https://github.com/ArthurPavezzi/aeroportos-api).
 ```js
 
 const aeroportos = require('aeroportos-promise');
 
-aeroportos.getAirportByIata('C_B').then(console.log);
+aeroportos('C_B').catch(console.log);
 
-// {"erro": "Código IATA inválido"}
+// {
+//   name: 'AeroportosPromiseError',
+//   message: 'O código IATA deve conter exatamente 3 caracteres',
+//   type: 'validation_error',
+//   error: {
+//     message: 'Código IATA informado possui mais do que 3 caracteres.',
+//     service: 'iata_validation'
+//   }
+// }
 ```
 
-### Quando a sigla não é encontrada
+### Quando o aeroporto não é encontrado
+Neste caso retornará um `"service_error"`. Se você tem total certeza que existe um aeroporto com o código IATA informado, peço encarecidamente que reporte [aqui](https://github.com/ArthurPavezzi/aeroportos-api/issues).
 ```js
 
 const aeroportos = require('aeroportos-promise');
 
-aeroportos.getAirportByIata('aaa').then(console.log);
+aeroportos('ZZZ').catch(console.log);
 
-// {"erro": 'Não foi encontrado um aeroporto com este código"}
+// {
+//   name: 'AeroportosPromiseError',
+//   message: 'Aeroporto não encontrado',
+//   type: 'service_error',
+//   error: {
+//     message: 'Não foi possível encontrar um aeroporto com este código IATA.',
+//     service: 'aeroportos_api'
+//   }
+// }
 ```
 
 ### Instalação
-#### npm
 
 ```
-npm install --save aeroportos-promise
+npm install aeroportos-promise
 ```
 
 ## Autor

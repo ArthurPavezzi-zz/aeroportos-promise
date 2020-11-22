@@ -1,0 +1,9 @@
+{
+  "name": "AeroportosPromiseError",
+  "message": "O código IATA deve conter exatamente 3 caracteres",
+  "type": "validation_error",
+  "error": {
+    "message": "Código IATA informado possui mais do que 3 caracteres.",
+    "service": "iata_validation"
+  }
+}

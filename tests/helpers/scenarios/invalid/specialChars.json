@@ -1,0 +1,9 @@
+{
+  "name": "AeroportosPromiseError",
+  "message": "O código IATA deve conter apenas letras",
+  "type": "validation_error",
+  "error": {
+    "message": "Código IATA informado possui caracteres especiais e/ou números.",
+    "service": "iata_validation"
+  }
+}

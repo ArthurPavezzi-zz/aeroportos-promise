@@ -1,15 +1,26 @@
-const axios = require('axios');
+const AeroportosPromiseError = require('../../errors/aeportos-promise')
+const axios = require('axios')
 
 async function getSingleAirportByIata(iata) {
-    const url = `https://aeroportos-api.arthurpavezzi.vercel.app/api/api/airports/${iata}`;
+    const url = `https://aeroportos-api.arthurpavezzi.vercel.app/api/api/airports/${iata}`
 
     try {
-        return await axios.get(url);
+        return await axios.get(url)
     } catch (error) {
-        if (error.response.status === 404) {
-            return JSON.stringify({'erro': 'Não foi encontrado um aeroporto com este código'});
-        }
-        return JSON.stringify({'erro': 'Erro ao buscar aeroporto'});
+        let { status } = error.response
+        const message = status === 404 ? 'Aeroporto não encontrado'
+            : 'Erro interno da API'
+        const error_message = status === 404 ? 'Não foi possível encontrar um aeroporto com este código IATA.'
+            : 'O serviço retornou um erro.'
+
+        throw new AeroportosPromiseError({
+            message: message,
+            type: 'service_error',
+            error: {
+                message: error_message,
+                service: 'aeroportos_api'
+            }
+        })
     }
 }
 
